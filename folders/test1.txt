@@ -1,0 +1,4 @@
+class bb{
+var i=9;
+var k=8;
+}
