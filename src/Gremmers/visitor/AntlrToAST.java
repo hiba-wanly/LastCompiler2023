@@ -11,16 +11,20 @@ import Gremmers.prog.*;
 import Gremmers.var.*;
 import Gremmers.var.DoWhileStatement.DoWhileStatement;
 import Gremmers.var.Double;
+import Gremmers.var.Expression.*;
+import Gremmers.var.Expression.Math;
 import Gremmers.var.Float;
 import Gremmers.var.IfStatement.IfStatment;
 import Gremmers.var.Initial.*;
+import Gremmers.var.Loop.ForLoop;
 import Gremmers.var.Loop.Loop;
+import Gremmers.var.PrintStatement.PrintIdNum;
 import Gremmers.var.PrintStatement.PrintStatement;
+import Gremmers.var.PrintStatement.PrintText;
 import Gremmers.var.SwitchStatement.SwitchStatement;
 import Gremmers.var.TryCatchStatement.TryCatchStatement;
 import Gremmers.var.WhileStatement.WhileStatement;
 import syntax.projectParserBaseVisitor;
-import org.antlr.v4.runtime.Token;
 import syntax.projectParser;
 
 import java.lang.Integer;
@@ -34,7 +38,7 @@ public class AntlrToAST extends projectParserBaseVisitor<AST> {
         System.out.println("H");
         for(int i = 0 ; i < ctx.element().size() ;i++){
             System.out.println("HHH");
-            pp.getElements().add(visitElement(ctx.element().get(i)));
+            pp.getElements().add(visitElement(ctx.element(i)));
         }
         return  pp ;
     }
@@ -538,29 +542,47 @@ public class AntlrToAST extends projectParserBaseVisitor<AST> {
     @Override
     public Loop visitLoop(projectParser.LoopContext ctx) {
         Loop lo = new Loop();
-
-        //////////
+        if(ctx.for_INT_With_ID_ID() != null){
+            lo.setForloop(visitFor_VAR_With_ID_ID(ctx.for_VAR_With_ID_ID()));
+        }
+        if(ctx.for_INT_With_ID_ID() != null){
+            lo.setForloop(visitFor_INT_With_ID_ID(ctx.for_INT_With_ID_ID()));
+        }
+        if(ctx.for_VAR_With_ID_NUM() != null){
+            lo.setForloop(visitFor_VAR_With_ID_NUM(ctx.for_VAR_With_ID_NUM()));
+        }
+        if(ctx.for_INT_With_ID_NUM() != null){
+            lo.setForloop(visitFor_INT_With_ID_NUM(ctx.for_INT_With_ID_NUM()));
+        }
         return  lo;
     }
 
     @Override
-    public AST visitFor_VAR_With_ID_ID(projectParser.For_VAR_With_ID_IDContext ctx) {
-        return super.visitFor_VAR_With_ID_ID(ctx);
+    public ForLoop visitFor_VAR_With_ID_ID(projectParser.For_VAR_With_ID_IDContext ctx) {
+        ForLoop fo = new ForLoop();
+        ///////
+        return fo;
     }
 
     @Override
-    public AST visitFor_INT_With_ID_ID(projectParser.For_INT_With_ID_IDContext ctx) {
-        return super.visitFor_INT_With_ID_ID(ctx);
+    public ForLoop visitFor_INT_With_ID_ID(projectParser.For_INT_With_ID_IDContext ctx) {
+        ForLoop fo = new ForLoop();
+        ///////
+        return fo;
     }
 
     @Override
-    public AST visitFor_VAR_With_ID_NUM(projectParser.For_VAR_With_ID_NUMContext ctx) {
-        return super.visitFor_VAR_With_ID_NUM(ctx);
+    public ForLoop visitFor_VAR_With_ID_NUM(projectParser.For_VAR_With_ID_NUMContext ctx) {
+        ForLoop fo = new ForLoop();
+        ///////
+        return fo;
     }
 
     @Override
-    public AST visitFor_INT_With_ID_NUM(projectParser.For_INT_With_ID_NUMContext ctx) {
-        return super.visitFor_INT_With_ID_NUM(ctx);
+    public ForLoop visitFor_INT_With_ID_NUM(projectParser.For_INT_With_ID_NUMContext ctx) {
+        ForLoop fo = new ForLoop();
+        ///////
+        return fo;
     }
 
     @Override
@@ -571,18 +593,25 @@ public class AntlrToAST extends projectParserBaseVisitor<AST> {
     }
 
     @Override
-    public AST visitPrint_ID(projectParser.Print_IDContext ctx) {
-        return super.visitPrint_ID(ctx);
+    public PrintIdNum visitPrint_ID(projectParser.Print_IDContext ctx) {
+        PrintIdNum pp = new PrintIdNum();
+        ////////
+        return pp;
     }
 
     @Override
-    public AST visitPrint_NUM(projectParser.Print_NUMContext ctx) {
-        return super.visitPrint_NUM(ctx);
+    public PrintIdNum visitPrint_NUM(projectParser.Print_NUMContext ctx) {
+
+        PrintIdNum pp = new PrintIdNum();
+        ////////
+        return pp;
     }
 
     @Override
-    public AST visitPrint_TEXT(projectParser.Print_TEXTContext ctx) {
-        return super.visitPrint_TEXT(ctx);
+    public PrintText visitPrint_TEXT(projectParser.Print_TEXTContext ctx) {
+        PrintText pp = new PrintText();
+        ////////
+        return pp;
     }
 
     @Override
@@ -686,58 +715,177 @@ public class AntlrToAST extends projectParserBaseVisitor<AST> {
     }
 
     @Override
-    public AST visitBoolean_p(projectParser.Boolean_pContext ctx) {
-        return super.visitBoolean_p(ctx);
+    public booleanP visitBoolean_p(projectParser.Boolean_pContext ctx) {
+
+        System.out.println("visitBoolean_p");
+        booleanP boolean_p = new booleanP();
+
+        if (ctx.TRUE() != null) {
+            boolean_p.setTRUE(ctx.TRUE().toString().trim());
+        }
+        else if (ctx.FALSE() != null) {
+            boolean_p.setFALSE(ctx.FALSE().toString().trim());
+        }
+        return boolean_p;
     }
 
     @Override
-    public AST visitNumbers(projectParser.NumbersContext ctx) {
-        return super.visitNumbers(ctx);
+    public NumbersIF visitNumbers(projectParser.NumbersContext ctx) {
+
+        System.out.println("visitNumbers");
+        NumbersIF  numbers=new NumbersIF();
+        if(ctx.float_f()!=null) {
+            numbers.setFf(visitFloat_f(ctx.float_f()));
+        }
+        else if(ctx.int_i()!=null) {
+            numbers.setIi(visitInt_i(ctx.int_i()));
+        }
+        return numbers;
     }
 
     @Override
-    public AST visitVar(projectParser.VarContext ctx) {
-        return super.visitVar(ctx);
+    public Var visitVar(projectParser.VarContext ctx) {
+
+        Var vv = new Var();
+        vv.setVARNAME(ctx.ID().toString().trim());
+        return vv;
     }
 
     @Override
-    public AST visitExpression(projectParser.ExpressionContext ctx) {
-        return super.visitExpression(ctx);
+    public Expression visitExpression(projectParser.ExpressionContext ctx) {
+
+        System.out.println("visitExpression");
+        Expression  expression=new Expression();
+        if (ctx.numbers() != null) {
+            expression.setNumbers( visitNumbers(ctx.numbers()));
+        }
+        else if (ctx.boolean_p() != null) {
+            expression.setBoolean_p( visitBoolean_p(ctx.boolean_p()));
+        }
+        else if (ctx.var() != null) {
+            expression.setVar(visitVar(ctx.var()));
+        }
+        else if (ctx.expression() != null) {
+            expression.setExpression( visitExpression(ctx.expression()));
+        }
+        else if(ctx.math() != null){
+            expression.setMath(visitMath(ctx.math()));
+        }
+        return expression;
+
     }
 
     @Override
-    public AST visitMath(projectParser.MathContext ctx) {
-        return super.visitMath(ctx);
+    public Math visitMath(projectParser.MathContext ctx) {
+        System.out.println("visitMath");
+        Math math = new Math();
+        if (ctx.var().isEmpty()){
+            math.setNumbers1(visitNumbers(ctx.numbers(0)));
+            math.setNumbers2(visitNumbers(ctx.numbers(1)));
+        }
+        else if(ctx.numbers().isEmpty()){
+            math.setVar1(visitVar(ctx.var(0)));
+            math.setVar2(visitVar(ctx.var(1)));
+        }else{
+            math.setVar1(visitVar(ctx.var(0)));
+            math.setNumbers1(visitNumbers(ctx.numbers(0)));
+        }
+        math.setOperation(visitOperation(ctx.operation()));
+        return math;
     }
 
     @Override
-    public AST visitBoolExpresion(projectParser.BoolExpresionContext ctx) {
-        return super.visitBoolExpresion(ctx);
+    public BoolExpresions visitBoolExpresion(projectParser.BoolExpresionContext ctx) {
+
+        System.out.println("visitBoolExpresion");
+        BoolExpresions  boolExpresion=new BoolExpresions();
+        if(ctx.expression()!=null) {
+            boolExpresion.setExpression1( visitExpression(ctx.expression(0)));
+            boolExpresion.setBOOLEAN_SIGNS(ctx.SINGLS().toString().trim());
+            if (ctx.expression() != null)
+                boolExpresion.setExpression2(visitExpression(ctx.expression(1)));
+        }
+        else if(ctx.boolExpresion()!=null){
+            boolExpresion.setBoolExpresion(visitBoolExpresion(ctx.boolExpresion()));
+        }
+
+        return boolExpresion;
     }
 
     @Override
-    public AST visitLogic(projectParser.LogicContext ctx) {
-        return super.visitLogic(ctx);
+    public Logic visitLogic(projectParser.LogicContext ctx) {
+        System.out.println("visitLogic");
+        Logic   logic=new Logic();
+        if(ctx.boolExpresion()!=null){
+            logic.setBoolExpresion( visitBoolExpresion(ctx.boolExpresion()));
+            for (int i = 0; i < ctx.nestedLogic().size(); i++) {
+                logic.getNestedLogics().add( visitNestedLogic(ctx.nestedLogic(i)));
+            }
+        }
+        else if(ctx.logic()!=null){
+            logic.setLogic(visitLogic(ctx.logic()));
+            for (int i = 0; i < ctx.nestedLogic2().size(); i++) {
+                logic.getNestedLogic2s().add( visitNestedLogic2(ctx.nestedLogic2(i)));
+            }
+        }
+        return logic;
     }
 
     @Override
-    public AST visitNestedLogic(projectParser.NestedLogicContext ctx) {
-        return super.visitNestedLogic(ctx);
+    public NestedLogic visitNestedLogic(projectParser.NestedLogicContext ctx) {
+
+        System.out.println("visitNestedLogic");
+        NestedLogic nestedLogic=new NestedLogic();
+        nestedLogic.setLOGIC_SIGNS(ctx.LOGIC_SIGNS().toString().trim());
+        nestedLogic.setBoolExpresion(visitBoolExpresion(ctx.boolExpresion()));
+
+        return nestedLogic;
     }
 
     @Override
-    public AST visitNestedLogic2(projectParser.NestedLogic2Context ctx) {
-        return super.visitNestedLogic2(ctx);
+    public NestedLogic2 visitNestedLogic2(projectParser.NestedLogic2Context ctx) {
+
+        System.out.println("visitNestedLogic2");
+        NestedLogic2 nestedLogic2=new NestedLogic2();
+        nestedLogic2.setLOGIC_SIGNS(ctx.LOGIC_SIGNS().toString().trim());
+        nestedLogic2.setLogic(visitLogic(ctx.logic()));
+
+        return nestedLogic2;
     }
 
     @Override
-    public AST visitConditions(projectParser.ConditionsContext ctx) {
-        return super.visitConditions(ctx);
+    public Conditions visitConditions(projectParser.ConditionsContext ctx) {
+
+        System.out.println("visitConditions");
+        Conditions  conditions=new Conditions();
+        if(ctx.boolExpresion()!=null) {
+            conditions.setBoolExpresion( visitBoolExpresion(ctx.boolExpresion()));
+        }
+        else if(ctx.logic()!=null) {
+            conditions.setLogic( visitLogic(ctx.logic()));
+        }
+        return conditions;
     }
 
     @Override
-    public AST visitOperation(projectParser.OperationContext ctx) {
-        return super.visitOperation(ctx);
+    public Operations visitOperation(projectParser.OperationContext ctx) {
+        System.out.println("visitOperation");
+        Operations operation=new Operations();
+        if(ctx.PLUS()!=null){
+            operation.setPLUS(ctx.PLUS().toString().trim());
+        }
+
+        else  if(ctx.MINUS()!=null){
+            operation.setMINUS(ctx.MINUS().toString().trim());
+        }
+        else if(ctx.MULTI()!=null){
+            operation.setMULTI(ctx.MULTI().toString().trim());
+        }
+        else if(ctx.DIVIDE()!=null){
+            operation.setDIVIDE(ctx.DIVIDE().toString().trim());
+        }
+
+        return operation;
     }
 
     @Override
@@ -765,9 +913,9 @@ public class AntlrToAST extends projectParserBaseVisitor<AST> {
         if(ctx.identifier() != null){
             ex.setIdentifier(visitIdentifier(ctx.identifier()));
         }
-//        if(ctx.integer() != null){
-//            ex.setInteger(visitInteger(ctx.integer()));
-//        }////////////error
+        if(ctx.integer_i() != null){
+            ex.setInteger(visitInteger_i(ctx.integer_i()));
+        }
         return ex;
     }
 
@@ -908,10 +1056,11 @@ public class AntlrToAST extends projectParserBaseVisitor<AST> {
     public ClassStatement visitClassstatement(projectParser.ClassstatementContext ctx) {
         System.out.println("VisitClassStatment");
         ClassStatement clas = new ClassStatement();
-        clas.setClas(ctx.CLASS().toString());
-        clas.setId(ctx.ID().toString());
+        clas.setClas(ctx.CLASS().toString().trim());
+        clas.setId(ctx.ID().toString().trim());
         for(int i=0; i<ctx.inputclass().size() ; i++){
-            clas.setInputclasses(visitInputclass(ctx.inputclass().get(i)));
+//            clas.setInputclasses(visitInputclass(ctx.inputclass().get(i)));
+             clas.getInputclasses().add(visitInputclass(ctx.inputclass(i)));
         }
         return clas;
     }

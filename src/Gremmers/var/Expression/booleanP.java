@@ -1,4 +1,4 @@
-package Gremmers.var;
+package Gremmers.var.Expression;
 
 import Gremmers.AST;
 

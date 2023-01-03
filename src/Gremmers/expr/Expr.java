@@ -9,7 +9,7 @@ public class Expr extends AST {
     public Subtraction subtraction;
     public Division division;
     public Identifier identifier;
-    public Integer integer;
+    public IntegerII integer;
 
 
     public void setMultiplication(Multiplication multiplication){
@@ -52,11 +52,11 @@ public class Expr extends AST {
         return identifier;
     }
 
-    public void setInteger(Integer integer){
+    public void setInteger(IntegerII integer){
         this.integer = integer;
     }
 
-    public Integer getInteger(){
+    public IntegerII getInteger(){
         return integer;
     }
 

@@ -6,10 +6,6 @@ import java.util.ArrayList;
 public class Prog extends AST{
     public ArrayList<Element> elements = new ArrayList<>();
 
-
-
-
-
     public ArrayList<Element> getElements(){
         return elements;
     }

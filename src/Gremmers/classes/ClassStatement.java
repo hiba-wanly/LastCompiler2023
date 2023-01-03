@@ -24,8 +24,8 @@ public class ClassStatement extends AST {
         return id;
     }
 
-    public void setInputclasses(InputClasses inputclasses){
-        this.inputclasses.add(inputclasses);
+    public void setInputclasses(ArrayList<InputClasses> inputclasses){
+        this.inputclasses = inputclasses;
     }
     public ArrayList<InputClasses> getInputclasses(){
         return inputclasses;
